@@ -5,6 +5,9 @@ const questionModel = new mongoose.Schema({
         type:String,
         required:true
     },
+    platform:{
+        type:String,
+    },
     link:{
         type:String,
         required:true,
