@@ -3,6 +3,7 @@ import express from "express"; // method-2
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import userRoute from "./routes/userRoute.js";
+import sheetRoute from "./routes/sheetRoute.js";
 import questionRoute from "./routes/questionRoute.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -24,6 +25,7 @@ app.use(cors(corsOption));
 // routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/question", questionRoute);
+app.use("/api/v1/sheet", sheetRoute);
 
 app.listen(PORT, () => {
   connectDB();
