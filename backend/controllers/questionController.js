@@ -36,28 +36,12 @@ export const markQuestion = async (req, res) => {
 };
 
 export const addQuestion = async (req, res) => {
-  function getLeetCodeProblemName(url) {
-    const parts = url.split("/");
-    const index = parts.indexOf("problems") + 1;
-    if (index <= 0 || index >= parts.length) return null;
-    return parts[index].replace(/-/g, " ");
-  }
-
-  function getGFGProblemName(url) {
-    const regex = /geeksforgeeks\.org\/problems\/([^/]+)\/\d+/i;
-    const match = url.match(regex);
-    if (match) {
-      return match[1].replace(/-/g, " ");
-    }
-    return url;
-  }
-
   try {
-    const { questionLink, sheetName } = req.body;
-    if (!questionLink) {
+    const { link, title, tags, platform, sheetName } = req.body;
+    if (!link || !title || !tags || !platform) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const question = await Question.findOne({ link: questionLink });
+    const question = await Question.findOne({ link });
     if (question) {
       const qId = question._id;
       const inSheet = await Sheet.findOne({
@@ -65,6 +49,14 @@ export const addQuestion = async (req, res) => {
         sheetQuestions: qId,
       });
       if (!inSheet) {
+        const updatedQuestion = await Question.findByIdAndUpdate(
+          qId,
+          {
+            $addToSet: { sheets: sheetName }, // push topic only if not already present
+          },
+          { new: true } // return the updated document
+        );
+
         await Sheet.updateOne(
           { sheetName },
           { $addToSet: { sheetQuestions: qId } }
@@ -79,18 +71,7 @@ export const addQuestion = async (req, res) => {
         .status(400)
         .json({ message: "Question already exists in database" });
     }
-    const link = questionLink;
-    // profilePhoto
-    let title;
-    let platform;
-    if (link.toLowerCase().includes("leetcode")) {
-      platform = "leetcode";
-      title = getLeetCodeProblemName(link);
-    }
-    if (link.toLowerCase().includes("geeksforgeeks")) {
-      platform = "gfg";
-      title = getGFGProblemName(link);
-    }
+
     // if (link.toLowerCase().includes("leetcode")) {
     //     platform = "leetcode";
     // } if (link.toLowerCase().includes("leetcode")) {
@@ -99,8 +80,10 @@ export const addQuestion = async (req, res) => {
 
     const newQuestion = await Question.create({
       title,
-      link: questionLink,
+      link,
       platform,
+      tags,
+      sheets: sheetName,
       // profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
     });
 
