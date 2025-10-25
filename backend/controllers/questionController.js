@@ -72,19 +72,12 @@ export const addQuestion = async (req, res) => {
         .json({ message: "Question already exists in database" });
     }
 
-    // if (link.toLowerCase().includes("leetcode")) {
-    //     platform = "leetcode";
-    // } if (link.toLowerCase().includes("leetcode")) {
-    //     platform = "leetcode";
-    // }
-
     const newQuestion = await Question.create({
       title,
       link,
       platform,
       tags,
       sheets: sheetName,
-      // profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
     });
 
     await Sheet.updateOne(
@@ -101,14 +94,26 @@ export const addQuestion = async (req, res) => {
   }
 };
 
-// export const getMessage = async (req, res) => {
-//     try {
-//         const userId = req.id;
-//         const questions = await Conversation.findOne({
-//             participants: { $all: [senderId, receiverId] }
-//         }).populate("messages");
-//         return res.status(200).json(conversation?.messages);
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+export const getQuestions = async (req, res) => {
+  try {
+    const sheetId = req.params.id; // 1
+    const userId = req.id; // 2
+
+    const user = await User.findById(userId).select("solvedQuestions"); // 4
+    const sheet = await Sheet.findById(sheetId).populate("sheetQuestions");
+    console.log(sheet);
+    const questionsWithSolvedFlag = sheet.sheetQuestions.map((q) => ({
+      ...q._doc,
+      isSolved: user.solvedQuestions.includes(q._id.toString()),
+    }));
+
+    const solvedInSheet = sheet.sheetQuestions.filter((q) =>
+      user.solvedQuestions.includes(q._id)
+    );
+
+    return res.status(200).json(questionsWithSolvedFlag); // 5
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+};
