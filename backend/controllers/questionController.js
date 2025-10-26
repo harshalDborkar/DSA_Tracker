@@ -101,15 +101,14 @@ export const getQuestions = async (req, res) => {
 
     const user = await User.findById(userId).select("solvedQuestions"); // 4
     const sheet = await Sheet.findById(sheetId).populate("sheetQuestions");
-    console.log(sheet);
     const questionsWithSolvedFlag = sheet.sheetQuestions.map((q) => ({
       ...q._doc,
       isSolved: user.solvedQuestions.includes(q._id.toString()),
     }));
 
-    const solvedInSheet = sheet.sheetQuestions.filter((q) =>
-      user.solvedQuestions.includes(q._id)
-    );
+    // const solvedInSheet = sheet.sheetQuestions.filter((q) =>
+    //   user.solvedQuestions.includes(q._id)
+    // );
 
     return res.status(200).json(questionsWithSolvedFlag); // 5
   } catch (error) {
