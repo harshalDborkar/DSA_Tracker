@@ -1,5 +1,6 @@
 import React from "react";
-
+import leetcodeLogo from "../../public/leetcode.svg";
+import geeksforgeeksLogo from "../../public/geeksforgeeks.svg";
 const QuestionRow = () => {
   return (
     <>
@@ -16,9 +17,9 @@ const QuestionRow = () => {
         <td>
           <div className="flex items-center gap-3">
             <div className="avatar">
-              <div className="mask mask-squircle h-12 w-12">
+              <div className="mask mask-squircle h-8 w-auto">
                 <img
-                  src="https://img.daisyui.com/images/profile/demo/5@94.webp"
+                  src={geeksforgeeksLogo}
                   alt="Avatar Tailwind CSS Component"
                 />
               </div>

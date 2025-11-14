@@ -1,0 +1,12 @@
+[33m865b65b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m decorations
+[33maa877ff[m done some beautification
+[33mcf765d4[m Basic Template
+[33mf07dd7f[m Initial step
+[33m7a3b175[m Initializing the frontend
+[33me68190a[m get sheets added
+[33mf5df538[m getting list of all questions in a sheet, with a is solved flag
+[33m5b6d750[m add question to sheet , if already present in database , but not in sheet , then add it to sheet and update the sheets in the wuestion database
+[33m7f5242f[m questions are being added to the sheet
+[33m2ec46a0[m data insertion in sheets not working
+[33m085b672[m stage 2
+[33m76a96be[m Initial commit
