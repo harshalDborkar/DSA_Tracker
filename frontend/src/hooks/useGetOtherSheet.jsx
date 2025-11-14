@@ -11,7 +11,7 @@ const useGetOtherSheet = () => {
     const fetchOtherSheet = async () => {
       try {
         axios.defaults.withCredentials = true;
-        const res = await axios.get(`${BASE_URL}/api/v1/user`);
+        const res = await axios.get(`${BASE_URL}/api/v1/sheet/getsheets`);
         console.log("Other users ", res);
         dispatch(setOtherSheet(res.data));
       } catch (error) {

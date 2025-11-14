@@ -5,10 +5,14 @@ import { useSelector } from "react-redux";
 const SheetNames = () => {
   useGetOtherSheet();
   const { otherSheet } = useSelector((store) => store.sheet);
+  if (!otherSheet) return;
+
   return (
     <div>
       <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
-        <SheetName />
+        {otherSheet?.map((sheet) => {
+          return <SheetName key={sheet._id} sheet={sheet} />;
+        })}
       </ul>
     </div>
   );
