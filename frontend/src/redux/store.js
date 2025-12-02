@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import sheetReducer from "./otherSheetSlice.js";
+import questionReducer from "./questionsSlice.js";
 import {
   persistReducer,
   FLUSH,
@@ -19,6 +20,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   sheet: sheetReducer,
+  question: questionReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
