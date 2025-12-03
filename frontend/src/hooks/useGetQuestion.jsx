@@ -13,8 +13,8 @@ const useGetQuestion = () => {
         const res = await axios.get(
           `${BASE_URL}/api/v1/question/getQuestion/${selectedSheet?._id}`
         );
-        console.log("Sheet Questions", res);
-        dispatch(setQuestion(res));
+        console.log("Sheet Questions", res.data);
+        dispatch(setQuestion(res.data));
       } catch (error) {
         console.log(error);
       }
